@@ -16,7 +16,7 @@
 #define VK_RBUTTON 0x02  // Right Mouse Button (ПКМ)
 #define VK_ESC 0x27  // Right Mouse Button (ПКМ)
 
-std::atomic<bool> running(true);  // Флаг для управления работой приложения
+std::atomic<bool> running(true);
 
 // Функция для плавного перемещения мыши
 void MoveMouseSmoothly(int dx, int dy, int duration_ms) {
@@ -36,41 +36,23 @@ void MoveMouseSmoothly(int dx, int dy, int duration_ms) {
 	}
 }
 
-// Функция для имитации продолжительного нажатия ЛКМ
-void HoldLeftMouseButton(int duration_ms) {
-	INPUT input = { 0 };
-	input.type = INPUT_MOUSE;
-
-	// Нажатие ЛКМ
-	input.mi.dwFlags = MOUSEEVENTF_LEFTDOWN;
-	SendInput(1, &input, sizeof(INPUT));
-
-	// Задержка на удержание
-	Sleep(duration_ms);
-
-	// Отпускание ЛКМ
-	input.mi.dwFlags = MOUSEEVENTF_LEFTUP;
-	SendInput(1, &input, sizeof(INPUT));
-}
-
 void keyListener() {
 	while (running) {
-		if (GetAsyncKeyState(VK_ESCAPE) & 0x8000) {  // Отслеживаем нажатие клавиши Escape
+		if (GetAsyncKeyState(VK_ESCAPE) & 0x8000) {
 			std::cout << "Escape key pressed!\n";
-			running = false;  // Устанавливаем флаг завершения
+			running = false;
 			exit(EXIT_SUCCESS);
 		}
-		Sleep(100);  // Небольшая задержка
+		Sleep(100);
 	}
 }
 
-// Функция для проверки нажатия Esc и завершения приложения
 void CheckForExit() {
 	while (running) {
 		if (false) {
 			running = false;
 		}
-		Sleep(10);  // Добавляем небольшую задержку для снижения нагрузки на процессор
+		Sleep(10);
 	}
 }
 
@@ -97,37 +79,17 @@ void birdFarm()
 
 }
 
-void Farm()
+void albinorsFarm()
 {
-	//static bool back = false;
-	//if (!back)
-	//{
-		//MoveMouseSmoothly(-1000, 0, 15);
 	MoveMouseSmoothly(-900, 0, 15);
-	//	back = true;
-	//}
-	//else
-	//{
-	//	MoveMouseSmoothly(3700, 0, 45);
-	//	//Sleep(3700);
-	//	//MoveMouseSmoothly(800, 0, 10);
-	//	back = false;
-	//}
 }
 
 int main() {
-	// Запуск потока для проверки нажатия Esc
 	std::thread listenerThread(keyListener);
 
-	//setlocale(LC_ALL, "Ru");
-	// Задержка перед началом (2.5 секунды)
-
 	while (!(GetAsyncKeyState(VK_ESCAPE) & 0x8000)) {
-		// Проверяем нажатие "}"
 		if (GetAsyncKeyState(VK_CLOSE_BRACE) & 0x8000) {
-			/*boulderFarm();*/
-			//birdFarm();
-			Farm();
+			albinorsFarm();
 		}
 	}
 
